@@ -11,7 +11,7 @@ local scene = composer.newScene()
 -- you need these to exist the entire scene
 -- this is called "forward reference"
 local map = nil
-local knight = nil
+local ninja = nil
 local rightArrow = nil
  
 -- -----------------------------------------------------------------------------------
@@ -21,26 +21,26 @@ local rightArrow = nil
  
 local function onRightArrowTouch( event )
     if ( event.phase == "began" ) then
-        if knight.sequence ~= "run" then
-            knight.sequence = "run"
-            knight:setSequence( "run" )
-            knight:play()
+        if ninja.sequence ~= "run" then
+            ninja.sequence = "run"
+            ninja:setSequence( "run" )
+            ninja:play()
         end
 
     elseif ( event.phase == "ended" ) then
-        if knight.sequence ~= "idle" then
-            knight.sequence = "idle"
-            knight:setSequence( "idle" )
-            knight:play()
+        if ninja.sequence ~= "idle" then
+            ninja.sequence = "idle"
+            ninja:setSequence( "idle" )
+            ninja:play()
         end
     end
     return true
 end 
  
-local moveKnight = function( event )
+local moveNinja = function( event )
     
-    if knight.sequence == "run" then
-        transition.moveBy( knight, { 
+    if ninja.sequence == "run" then
+        transition.moveBy( ninja, { 
             x = 10, 
             y = 0, 
             time = 0 
@@ -68,11 +68,11 @@ function scene:create( event )
 	map = tiled.new( mapData, "assets/maps" )
 
     -- our character
-    local sheetOptionsIdle = require("assets.spritesheets.knight.knightIdle")
-    local sheetIdleKnight = graphics.newImageSheet( "./assets/spritesheets/knight/knightIdle.png", sheetOptionsIdle:getSheet() )
+    local sheetOptionsIdle = require("assets.spritesheets.ninjaBoy.ninjaBoyIdle")
+    local sheetIdleNinja = graphics.newImageSheet( "./assets/spritesheets/ninjaBoy/ninjaBoyIdle.png", sheetOptionsIdle:getSheet() )
 
-    local sheetOptionsRun = require("assets.spritesheets.knight.knightRun")
-    local sheetRunningKnight = graphics.newImageSheet( "./assets/spritesheets/knight/knightRun.png", sheetOptionsRun:getSheet() )
+    local sheetOptionsRun = require("assets.spritesheets.ninjaBoy.ninjaBoyRun")
+    local sheetRunningNinja = graphics.newImageSheet( "./assets/spritesheets/ninjaBoy/ninjaBoyRun.png", sheetOptionsRun:getSheet() )
 
     -- sequences table
     local sequence_data = {
@@ -83,7 +83,7 @@ function scene:create( event )
             count = 10,
             time = 800,
             loopCount = 0,
-            sheet = sheetIdleKnight
+            sheet = sheetIdleNinja
         },
         {
             name = "run",
@@ -91,20 +91,20 @@ function scene:create( event )
             count = 10,
             time = 1000,
             loopCount = 0,
-            sheet = sheetRunningKnight
+            sheet = sheetRunningNinja
         }
     }
 
-    knight = display.newSprite( sheetIdleKnight, sequence_data )
+    ninja = display.newSprite( sheetIdleNinja, sequence_data )
     -- Add physics
-	physics.addBody( knight, "dynamic", { density = 3, bounce = 0, friction =  1.0 } )
-	knight.isFixedRotation = true
-    knight.id = "knight"
-    knight.sequence = "idle"
-    knight.x = 500
-    knight.y = 500
-    knight:setSequence( "idle" )
-    knight:play()
+	physics.addBody( ninja, "dynamic", { density = 3, bounce = 0, friction =  1.0 } )
+	ninja.isFixedRotation = true
+    ninja.id = "ninja"
+    ninja.sequence = "idle"
+    ninja.x = 500
+    ninja.y = 500
+    ninja:setSequence( "idle" )
+    ninja:play()
 
     -- add move arrow
     rightArrow = display.newImage( "./assets/sprites/items/rightArrow.png" )
@@ -115,7 +115,7 @@ function scene:create( event )
     
     -- Insert our game items in the correct back-to-front order
     sceneGroup:insert( map )
-    sceneGroup:insert( knight )
+    sceneGroup:insert( ninja )
     sceneGroup:insert( rightArrow )
  
 end
@@ -133,7 +133,7 @@ function scene:show( event )
  
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
-        Runtime:addEventListener( "enterFrame", moveKnight )
+        Runtime:addEventListener( "enterFrame", moveNinja )
     end
 end
  
@@ -152,7 +152,7 @@ function scene:hide( event )
 
         -- good practise to remove every event listener you create
         rightArrow:removeEventListener( "touch", onRightArrowTouch )
-        Runtime:removeEventListener( "enterFrame", moveKnight )
+        Runtime:removeEventListener( "enterFrame", moveninja )
     end
 end
  
